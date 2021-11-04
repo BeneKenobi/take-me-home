@@ -11,6 +11,8 @@ export default function App() {
   );
 }
 
+// this is a comment in order to test the pull request feature
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
