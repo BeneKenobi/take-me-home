@@ -1,0 +1,11 @@
+flowchart TD
+    idOA(Öffne App) --> idAL(Aktualisiere Lokation)
+    idAL --> idRA(Ermittle Reisedauer Auto)
+    idAL --> idRO(Ermittle Reisedauer öffentliche Verkehrsmittel)
+    idAL --> idRF(Ermittele Reisedauer Fahrrad)
+    idRA --> idZR(Zeige Reisedauern an)
+    idRO --> idZR
+    idRF --> idZR
+    idZR --> idTR(Tap auf Reisedauer)
+    idTR --> idTS(Generiere Text mit Verkehrsmittel und Reisedauer)
+    idTS --> idOS(Öffne Teilen-Dialog des Betriebssystems für generierten Text)
