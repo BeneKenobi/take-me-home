@@ -15,7 +15,10 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"dbaeumer.vscode-eslint"
+		"dbaeumer.vscode-eslint",
+		"vivaxy.vscode-conventional-commits",
+		"tomoyukim.vscode-mermaid-editor",
+		"msjsdiag.vscode-react-native"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
