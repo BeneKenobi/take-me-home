@@ -4,6 +4,22 @@ An app to calculate the time it takes to get home. Written in React. Created for
 
 ## short intro
 
+### install/update dependencies
+
+```Shell
+yarn install
+```
+
+### run
+
 ```Shell
 yarn start
+```
+
+## as developer
+
+### upgrade expo packages
+
+```Shell
+expo upgrade
 ```
