@@ -18,7 +18,8 @@
 		"dbaeumer.vscode-eslint",
 		"vivaxy.vscode-conventional-commits",
 		"tomoyukim.vscode-mermaid-editor",
-		"msjsdiag.vscode-react-native"
+		"msjsdiag.vscode-react-native",
+		"github.vscode-pull-request-github"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
