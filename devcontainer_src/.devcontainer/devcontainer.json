@@ -2,7 +2,13 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.205.2/containers/javascript-node
 {
 	"name": "take-me-home-dev-container",
-	"image": "ghcr.io/benekenobi/take-me-home-dev-container:latest",
+	"build": {
+		"dockerfile": "Dockerfile",
+		// Update 'VARIANT' to pick a Node version: 16, 14, 12.
+		// Append -bullseye or -buster to pin to an OS version.
+		// Use -bullseye variants on local arm64/Apple Silicon.
+		"args": { "VARIANT": "16-bullseye" }
+	},
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": {},
@@ -15,9 +21,6 @@
 		"msjsdiag.vscode-react-native",
 		"github.vscode-pull-request-github"
 	],
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [19000, 19001, 19002, 19006],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// raise yarn timeout because of possible slow docker performance and install dependencies
