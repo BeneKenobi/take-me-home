@@ -24,7 +24,5 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// raise yarn timeout because of possible slow docker performance and install dependencies
-	"postCreateCommand": "yarn config set network-timeout 300000 && yarn install",
-
-	"containerUser": "node"
+	"postCreateCommand": "yarn config set network-timeout 300000 && yarn install"
 }
