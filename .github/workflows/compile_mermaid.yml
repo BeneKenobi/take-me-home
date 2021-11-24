@@ -17,14 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Get changed files
+      - name: Get Mermaid files
         id: getfile
         run: |
-          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -e '.*\.md$' -e '.*\.mmd$' -e '.*\.mermaid$' | xargs)"
-
-      - name: Mermaid files changed
-        run: |
-          echo ${{ steps.getfile.outputs.files }}
+          echo "::set-output name=files::$(ls -p docs/**.mmd | tr '\n' ' ')"
 
       - name: Compile Mermaid
         uses: neenjaw/compile-mermaid-markdown-action@v0.3.3
@@ -41,7 +37,7 @@ jobs:
         with:
           commit-message: 'chore(docs): 📦️ compile mermaid'
           title: 'New/changed mermaid files compiled'
-          labels: report, automated pr
+          labels: automated pr
           assignees: ${{ github.actor }}
           reviewers: ${{ github.actor }}
           delete-branch: true
