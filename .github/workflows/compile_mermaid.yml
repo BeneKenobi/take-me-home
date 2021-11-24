@@ -7,6 +7,7 @@ on:
       - '**/*.mmd'
       - '**/*.md'
 
+  workflow_dispatch:
 
 jobs:
   build:
@@ -26,7 +27,7 @@ jobs:
           echo ${{ steps.getfile.outputs.files }}
 
       - name: Compile Mermaid
-        uses: neenjaw/compile-mermaid-markdown-action@0.3.3
+        uses: neenjaw/compile-mermaid-markdown-action@v0.3.3
         with:
           files: ${{ steps.getfile.outputs.files }}
           output: 'docs/images'
