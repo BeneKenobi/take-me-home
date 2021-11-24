@@ -1,0 +1,47 @@
+name: 'Compile Mermaid'
+
+on:
+  push:
+    paths:
+      - '**/*.mermaid'
+      - '**/*.mmd'
+      - '**/*.md'
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get changed files
+        id: getfile
+        run: |
+          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -e '.*\.md$' -e '.*\.mmd$' -e '.*\.mermaid$' | xargs)"
+
+      - name: Mermaid files changed
+        run: |
+          echo ${{ steps.getfile.outputs.files }}
+
+      - name: Compile Mermaid
+        uses: neenjaw/compile-mermaid-markdown-action@0.3.3
+        with:
+          files: ${{ steps.getfile.outputs.files }}
+          output: 'docs/images'
+        env:
+          HIDE_CODEBLOCKS: 1
+          ABSOLUTE_IMAGE_LINKS: 1
+          OUTPUT_FILE_TYPE: "png"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: 'chore(docs): 📦️ compile mermaid'
+          title: 'New/changed mermaid files compiled'
+          labels: report, automated pr
+          assignees: ${{ github.actor }}
+          reviewers: ${{ github.actor }}
+          delete-branch: true
+          branch: 'chore_compile-mermaid'
