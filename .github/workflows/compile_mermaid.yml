@@ -20,11 +20,7 @@ jobs:
       - name: Get Mermaid files
         id: getfile
         run: |
-          echo "::set-output name=files::$(ls -p  docs/**.mmd)"
-
-      - name: Mermaid files changed
-        run: |
-          echo ${{ steps.getfile.outputs.files }}
+          echo "::set-output name=files::$(ls -p **.mmd | grep -v / | tr '\n' ' ')"
 
       - name: Compile Mermaid
         uses: neenjaw/compile-mermaid-markdown-action@v0.3.3
@@ -41,7 +37,7 @@ jobs:
         with:
           commit-message: 'chore(docs): 📦️ compile mermaid'
           title: 'New/changed mermaid files compiled'
-          labels: report, automated pr
+          labels: automated pr
           assignees: ${{ github.actor }}
           reviewers: ${{ github.actor }}
           delete-branch: true
