@@ -20,7 +20,7 @@ jobs:
       - name: Get Mermaid files
         id: getfile
         run: |
-          echo "::set-output name=files::$(ls -p **.mmd | grep -v / | tr '\n' ' ')"
+          echo "::set-output name=files::$(ls -p docs/**.mmd | grep -v / | tr '\n' ' ')"
 
       - name: Compile Mermaid
         uses: neenjaw/compile-mermaid-markdown-action@v0.3.3
