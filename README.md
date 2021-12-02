@@ -1,9 +1,11 @@
 # take-me-home
+[![CodeQL](https://github.com/BeneKenobi/take-me-home/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/BeneKenobi/take-me-home/actions/workflows/codeql-analysis.yml)
+[![Build dev-container](https://github.com/BeneKenobi/take-me-home/actions/workflows/build-dev-container.yml/badge.svg)](https://github.com/BeneKenobi/take-me-home/actions/workflows/build-dev-container.yml)[![Expo Publish](https://github.com/BeneKenobi/take-me-home/actions/workflows/expo-publish.yml/badge.svg)](https://github.com/BeneKenobi/take-me-home/actions/workflows/expo-publish.yml)
 
 An app to calculate the time it takes to get home. Written in React(-Native). Created for the course **Web Technologien** at the [FOM Hochschule](https://www.fom.de/) by [@BeneKenobi](https://github.com/BeneKenobi) and [@Mekcyed](https://github.com/Mekcyed).
 
-[![CodeQL](https://github.com/BeneKenobi/take-me-home/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/BeneKenobi/take-me-home/actions/workflows/codeql-analysis.yml)
-[![Build dev-container](https://github.com/BeneKenobi/take-me-home/actions/workflows/build-dev-container.yml/badge.svg)](https://github.com/BeneKenobi/take-me-home/actions/workflows/build-dev-container.yml)
+
+You can easily checkout the latest version of branch `main` at https://expo.dev/@benekenobi/take-me-home.
 
 ## process overview
 
