@@ -19,3 +19,4 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
       - run: yarn install
       - run: expo publish
+      - run: yarn deploy
