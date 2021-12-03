@@ -1,11 +1,11 @@
-name: Expo Publish
+name: Publish
 on:
   push:
     branches:
       - main
 jobs:
-  publish:
-    name: Install and publish
+  publish-expo:
+    name: Publish to Expo.dev
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,6 +19,20 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
       - run: yarn install
       - run: expo publish
+  publish-web:
+    name: Publish to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - uses: expo/expo-github-action@v6
+        with:
+          expo-version: 4.x
+          expo-cache: true
+          token: ${{ secrets.EXPO_TOKEN }}
+      - run: yarn install
       - run: expo build:web
       - name: Publish to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v2.5.0
