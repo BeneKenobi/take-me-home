@@ -1,44 +1,76 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Image } from 'react-native';
 import * as Location from 'expo-location';
+import Constants from 'expo-constants';
 
 const App = () => {
-  return (
-    <SafeAreaView style={styles.container}>
+  let googleApiKey = Constants?.manifest?.extra?.googleApiKey
+  if (googleApiKey == undefined) {
+    return(
+      <SafeAreaView style={styles.page}>
+        <Text style={styles.text}>API Key Error</Text>
+      <StatusBar style="light" hidden={false} />
+      </SafeAreaView>
+    );
+  }
+
+ let [postitionStatus, location] = GetPosition()
+
+let image
+
+ if(location != undefined) {
+   image = getGoogleMapsImage(googleApiKey, location)
+ }
+
+  return(
+    <SafeAreaView style={styles.page}>
       <Text style={styles.text}>take me home</Text>
-      {GetPosition()}
+      {image}
+      <Text style={styles.debug}>{postitionStatus}</Text>
       <StatusBar style="light" hidden={false} />
     </SafeAreaView>
   );
 }
 
-const GetPosition = () => {
+const GetPosition = () : [string, Location.LocationObject | undefined ] => {
 
-  const [resultText, setResultText] = useState('Waiting for permission...');
+  const [resultText, setResult] = useState('Waiting for permission...');
+  const [location, setLocation] = useState<Location.LocationObject | undefined>(undefined);
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        setResultText('Permission to access location was denied. Please change your settings manually to use this app.');
+        setResult('Permission to access location was denied. Please change your settings manually to use this app.');
       } else {
-        setResultText('Getting your location...');
+        setResult('Getting your location...');
         (async () => {
-          let location = await Location.getCurrentPositionAsync({});
-          setResultText(JSON.stringify(location));
+          setLocation(await Location.getCurrentPositionAsync({}));
+          setResult('done');
         })();
       }
     })();
   }, []);
 
-  return (
-    <Text style={styles.debug}>{resultText}</Text>
+  return(
+    [resultText, location]
   );
 }
 
+const getGoogleMapsImage = (googleApiKey : string, location : Location.LocationObject) => {
+  return(
+    <Image
+      style = {styles.mapImage}
+      source = {{
+          uri: 'https://maps.googleapis.com/maps/api/staticmap?center=' + location.coords.latitude + ', ' + location.coords.longitude + '&zoom=17&size=400x400&key=' + googleApiKey
+      }}
+    />
+  )
+}
+
 const styles = StyleSheet.create({
-  container: {
+  page: {
     flex: 1,
     backgroundColor: '#000',
     alignItems: 'center',
@@ -51,6 +83,10 @@ const styles = StyleSheet.create({
   debug: {
     color: 'white',
     fontSize: 10
+  },
+  mapImage:  {
+    width: 400,
+    height: 400,
   }
 });
 
