@@ -2803,6 +2803,11 @@ dompurify@2.3.3:
   resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.3.3.tgz#c1af3eb88be47324432964d8abc75cf4b98d634c"
   integrity sha512-dqnqRkPMAjOZE0FogZ+ceJNM2dZ3V/yNOuFB7+39qpO93hHhfRpHw3heYQC7DPK9FqbQTfBKUJhiSfz4MvXYwg==
 
+dotenv@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"
+  integrity sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
@@ -2951,7 +2956,7 @@ expo-asset@~8.4.3:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
-expo-constants@~12.1.3:
+expo-constants@^12.1.3, expo-constants@~12.1.3:
   version "12.1.3"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-12.1.3.tgz#bec48a42a7760b010450961c209bb4b1158b9cd6"
   integrity sha512-HXlMTPn9pnJdMju3WcwX4oEB7EOECOTzdIPaG3JEluygqzafwKLMR8BE82+64jgAxlGIWZsYl+3Ni9wuTFQeYw==
