@@ -34,7 +34,7 @@ You can use a precompiled [dev-container](https://code.visualstudio.com/docs/rem
 create a file called `.env` in your root directory and fill with
 
 ```Shell
-GMAPS_API="your_api_key"
+GOOGLE_API_KEY="your_api_key"
 ```
 
 ### upgrade expo packages
