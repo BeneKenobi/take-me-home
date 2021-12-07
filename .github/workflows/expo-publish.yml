@@ -11,6 +11,9 @@ jobs:
     environment: 
       name: expo
       url: https://expo.dev/@benekenobi/take-me-home
+    env:
+      GOOGLE_API_KEY_ANDROID: ${{ secrets.GOOGLE_API_KEY_ANDROID }}
+      GOOGLE_API_KEY_IOS: ${{ secrets.GOOGLE_API_KEY_IOS }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -29,6 +32,8 @@ jobs:
     environment: 
       name: github-pages
       url: https://benekenobi.github.io/take-me-home/
+    env:
+      GOOGLE_API_KEY_WEB: ${{ secrets.GOOGLE_API_KEY_WEB }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
