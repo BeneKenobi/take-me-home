@@ -11,7 +11,7 @@ You can easily checkout the latest version of branch `main` on your own device a
 
 ![prozess_ueberblick](https://github.com/BeneKenobi/take-me-home/raw/main/docs/prozess_ueberblick-mmd.png)
 
-## short intro
+## short developer intro
 
 ### install/update dependencies
 
@@ -25,9 +25,19 @@ yarn install
 yarn start
 ```
 
-## as developer
+### dependencies / dev container
 
 You can use a precompiled [dev-container](https://code.visualstudio.com/docs/remote/containers) in [Visual Studio Code](https://code.visualstudio.com/) that already includes all dependencies.
+
+### Google Maps API Key
+
+create a file called `.env` in your root directory and fill with
+
+```Shell
+GOOGLE_API_KEY_WEB="web_api_key"
+GOOGLE_API_KEY_IOS="ios_api_key"
+GOOGLE_API_KEY_ANDROID="android_api_key"
+```
 
 ### upgrade expo packages
 
