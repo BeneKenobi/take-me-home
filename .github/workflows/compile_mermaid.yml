@@ -3,9 +3,7 @@ name: 'Compile Mermaid'
 on:
   push:
     paths:
-      - '**/*.mermaid'
       - '**/*.mmd'
-      - '**/*.md'
 
   workflow_dispatch:
 
