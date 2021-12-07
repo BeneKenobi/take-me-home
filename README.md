@@ -34,7 +34,9 @@ You can use a precompiled [dev-container](https://code.visualstudio.com/docs/rem
 create a file called `.env` in your root directory and fill with
 
 ```Shell
-GOOGLE_API_KEY="your_api_key"
+GOOGLE_API_KEY_WEB="web_api_key"
+GOOGLE_API_KEY_IOS="ios_api_key"
+GOOGLE_API_KEY_ANDROID="android_api_key"
 ```
 
 ### upgrade expo packages
