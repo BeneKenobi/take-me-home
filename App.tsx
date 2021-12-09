@@ -1,17 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  Image,
-  Dimensions,
-  TextInput,
-  View,
-  Button,
-  Alert,
-  ScrollView,
-} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {StyleSheet, Text, SafeAreaView, Image, Dimensions, TextInput, View, Button, Alert, ScrollView} from 'react-native';
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
 
@@ -20,7 +10,10 @@ const screen = Dimensions.get('screen');
 
 const App = () => {
   const [text, onChangeText] = React.useState('Destination');
+  const [destination, onChangeDestination] = React.useState(null);
+
   let googleApiKey: string;
+
   if (Constants.platform?.ios != undefined) {
     googleApiKey = Constants?.manifest?.extra?.googleApiKeyIos;
   } else if (Constants.platform?.android != undefined) {
@@ -66,13 +59,16 @@ const App = () => {
       <Text style={styles.debug}>{postitionStatus}</Text>
           <Text style={{color: 'white'}}>{'Please insert your destination'}</Text>
           <TextInput style={styles.input} onChangeText={onChangeText} value={text} />
-          <Text style={{color: 'white'}}>{text}</Text>
           <Button
-            onPress={() => Alert.alert('Simple Button pressed')}
+            onPress={() => 
+              setStringValue(text)
+            }
             title="Save Destination"
             color="#841584"
           />
-      <StatusBar style='light' hidden={false} />
+          {/* destination = getData
+          <Text style={{color: 'white'}}>{destination}</Text> */}
+          <StatusBar style='light' hidden={false} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -134,6 +130,28 @@ const getGoogleMapsImage = (
     />
   );
 };
+
+const setStringValue = async (value: string) => {
+  try {
+    await AsyncStorage.setItem('key', value)
+  } catch(e) {
+    // save error
+  }
+  Alert.alert('Gespeichert')
+
+}
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('key')
+    if(value !== null) {
+      // value previously stored
+      return value
+    }
+  } catch(e) {
+    // error reading value
+  }
+}
+
 
 const styles = StyleSheet.create({
   page: {
