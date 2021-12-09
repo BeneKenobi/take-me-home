@@ -52,5 +52,6 @@ jobs:
         with:
           build_dir: web-build
           jekyll: false
+          commit_message: "chore: 🚀 deploy to GitHub pages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
