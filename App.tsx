@@ -6,6 +6,11 @@ import {
   SafeAreaView,
   Image,
   Dimensions,
+  TextInput,
+  View,
+  Button,
+  Alert,
+  ScrollView,
 } from 'react-native';
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
@@ -14,6 +19,7 @@ const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
 
 const App = () => {
+  const [text, onChangeText] = React.useState('Destination');
   let googleApiKey: string;
   if (Constants.platform?.ios != undefined) {
     googleApiKey = Constants?.manifest?.extra?.googleApiKeyIos;
@@ -53,10 +59,22 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.page}>
-      <Text style={styles.text}>take me home</Text>
+      <Text style={styles.header}>take me home</Text>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.container}>
       {image}
       <Text style={styles.debug}>{postitionStatus}</Text>
+          <Text style={{color: 'white'}}>{'Please insert your destination'}</Text>
+          <TextInput style={styles.input} onChangeText={onChangeText} value={text} />
+          <Text style={{color: 'white'}}>{text}</Text>
+          <Button
+            onPress={() => Alert.alert('Simple Button pressed')}
+            title="Save Destination"
+            color="#841584"
+          />
       <StatusBar style='light' hidden={false} />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -124,9 +142,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  header: {
+    flex: 1,
+    color: 'white',
+    fontSize: 50,
+  },
   text: {
     color: 'white',
-    fontSize: 100,
+    fontSize: 50,
   },
   debug: {
     color: 'white',
@@ -135,6 +158,25 @@ const styles = StyleSheet.create({
   mapImage: {
     width: 400,
     height: 400,
+  },
+  input: {
+    width: 250,
+    height: 44,
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: '#e8e8e8'
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: 20,
+    backgroundColor: '#000',
+    justifyContent: 'center'
+  },
+  scrollView: {
+    backgroundColor: '#000',
+    marginHorizontal: 5,
   },
 });
 
