@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {StyleSheet, Text, SafeAreaView, Image, Dimensions, TextInput, View, Button, Alert, ScrollView} from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Image, Dimensions, TextInput, View, Button, Alert, ScrollView } from 'react-native';
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
 
@@ -9,8 +9,15 @@ const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
 
 const App = () => {
-  const [text, onChangeText] = React.useState('Destination');
-  const [destination, onChangeDestination] = React.useState(null);
+  const [destinationText, setDestinationText] = React.useState('Destination');
+  const [storedDestinationText, setStoredDestinationText] = React.useState('');
+  
+  useEffect(() => {
+    (async () => {
+      setStoredDestinationText(await getDestinationTextFromStorage());
+      //setDestinationText(storedDestinationText);
+    })();
+  }), [];
 
   let googleApiKey: string;
 
@@ -55,24 +62,24 @@ const App = () => {
       <Text style={styles.header}>take me home</Text>
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
-      {image}
-      <Text style={styles.debug}>{postitionStatus}</Text>
-          <Text style={{color: 'white'}}>{'Please insert your destination'}</Text>
-          <TextInput style={styles.input} onChangeText={onChangeText} value={text} />
+          {image}
+          <Text style={styles.debug}>{postitionStatus}</Text>
+          <Text style={{ color: 'white' }}>{'Please insert your destination'}</Text>
+          <TextInput style={styles.input} onChangeText={setDestinationText} value={destinationText} />
           <Button
-            onPress={() => 
-              setStringValue(text)
+            onPress={() =>
+              setDestinationTextInStorage(destinationText)
             }
             title="Save Destination"
             color="#841584"
           />
-          {/* destination = getData
-          <Text style={{color: 'white'}}>{destination}</Text> */}
+          <Text style={styles.debug}>{storedDestinationText}</Text>
           <StatusBar style='light' hidden={false} />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
+
 };
 
 const GetPosition = (): [string, Location.LocationObject | undefined] => {
@@ -131,25 +138,26 @@ const getGoogleMapsImage = (
   );
 };
 
-const setStringValue = async (value: string) => {
+const setDestinationTextInStorage = async (value: string) => {
   try {
-    await AsyncStorage.setItem('key', value)
-  } catch(e) {
+    await AsyncStorage.setItem('destinationText', value);
+    
+  } catch (e) {
     // save error
   }
   Alert.alert('Gespeichert')
 
 }
-const getData = async () => {
+const getDestinationTextFromStorage = async (): Promise<string> => {
   try {
-    const value = await AsyncStorage.getItem('key')
-    if(value !== null) {
-      // value previously stored
+    const value = await AsyncStorage.getItem('destinationText')
+    if (value !== null) {
       return value
-    }
-  } catch(e) {
+    } 
+  } catch (e) {
     // error reading value
   }
+  return 'test'
 }
 
 
