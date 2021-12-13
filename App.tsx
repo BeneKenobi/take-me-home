@@ -9,15 +9,13 @@ const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
 
 const App = () => {
-  const [destinationText, setDestinationText] = React.useState('Destination');
-  const [storedDestinationText, setStoredDestinationText] = React.useState('');
-  
+  const [destinationText, setDestinationText] = useState('');
+
   useEffect(() => {
-    (async () => {
-      setStoredDestinationText(await getDestinationTextFromStorage());
-      //setDestinationText(storedDestinationText);
-    })();
-  }), [];
+    getDestinationTextFromStorage().then((storedDestinationText) => {
+      setDestinationText(storedDestinationText);
+    });
+  }, []);
 
   let googleApiKey: string;
 
