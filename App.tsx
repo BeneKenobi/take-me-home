@@ -68,8 +68,8 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.page}>
-      <Text style={styles.header}>take me home</Text>
       <ScrollView style={styles.scrollView}>
+        <Text style={styles.header}>take me home</Text>
         <View style={styles.container}>
           {image}
           <Text style={styles.debug}>{postitionStatus}</Text>
@@ -167,7 +167,7 @@ const getDestinationTextFromStorage = async (): Promise<string> => {
   } catch (e) {
     // error reading value
   }
-  return ''
+  return '';
 };
 
 const styles = StyleSheet.create({
