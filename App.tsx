@@ -1,7 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StyleSheet, Text, SafeAreaView, Image, Dimensions, TextInput, View, Button, Alert, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  Image,
+  Dimensions,
+  TextInput,
+  View,
+  Button,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
 
@@ -62,21 +73,24 @@ const App = () => {
         <View style={styles.container}>
           {image}
           <Text style={styles.debug}>{postitionStatus}</Text>
-          <Text style={{ color: 'white' }}>{'Please insert your destination'}</Text>
-          <TextInput style={styles.input} onChangeText={setDestinationText} value={destinationText} />
+          <Text style={{ color: 'white' }}>
+            {'Please insert your destination'}
+          </Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={setDestinationText}
+            value={destinationText}
+          />
           <Button
-            onPress={() =>
-              setDestinationTextInStorage(destinationText)
-            }
-            title="Save Destination"
-            color="#841584"
+            onPress={() => setDestinationTextInStorage(destinationText)}
+            title='Save Destination'
+            color='#841584'
           />
           <StatusBar style='light' hidden={false} />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-
 };
 
 const GetPosition = (): [string, Location.LocationObject | undefined] => {
@@ -138,25 +152,23 @@ const getGoogleMapsImage = (
 const setDestinationTextInStorage = async (value: string) => {
   try {
     await AsyncStorage.setItem('destinationText', value);
-    
   } catch (e) {
     // save error
   }
-  Alert.alert('Gespeichert')
+  Alert.alert('Gespeichert');
+};
 
-}
 const getDestinationTextFromStorage = async (): Promise<string> => {
   try {
-    const value = await AsyncStorage.getItem('destinationText')
+    const value = await AsyncStorage.getItem('destinationText');
     if (value !== null) {
-      return value
-    } 
+      return value;
+    }
   } catch (e) {
     // error reading value
   }
-  return 'test'
-}
-
+  return 'test';
+};
 
 const styles = StyleSheet.create({
   page: {
@@ -188,14 +200,14 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: '#e8e8e8'
+    backgroundColor: '#e8e8e8',
   },
   container: {
     flex: 1,
     alignItems: 'center',
     marginTop: 20,
     backgroundColor: '#000',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   scrollView: {
     backgroundColor: '#000',
