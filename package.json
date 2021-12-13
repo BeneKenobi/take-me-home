@@ -4,7 +4,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "homepage": "https://benekenobi.github.io/take-me-home",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --tunnel",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
