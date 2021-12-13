@@ -12,6 +12,7 @@ import {
   Button,
   Alert,
   ScrollView,
+  Platform,
 } from 'react-native';
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
@@ -30,9 +31,9 @@ const App = () => {
 
   let googleApiKey: string;
 
-  if (Constants.platform?.ios != undefined) {
+  if (Platform.OS === 'ios') {
     googleApiKey = Constants?.manifest?.extra?.googleApiKeyIos;
-  } else if (Constants.platform?.android != undefined) {
+  } else if (Platform.OS === 'android') {
     googleApiKey = Constants?.manifest?.extra?.googleApiKeyAndroid;
   } else {
     googleApiKey = Constants?.manifest?.extra?.googleApiKeyWeb;
