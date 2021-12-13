@@ -71,7 +71,6 @@ const App = () => {
             title="Save Destination"
             color="#841584"
           />
-          <Text style={styles.debug}>{storedDestinationText}</Text>
           <StatusBar style='light' hidden={false} />
         </View>
       </ScrollView>
