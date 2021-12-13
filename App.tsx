@@ -167,7 +167,7 @@ const getDestinationTextFromStorage = async (): Promise<string> => {
   } catch (e) {
     // error reading value
   }
-  return 'test';
+  return ''
 };
 
 const styles = StyleSheet.create({
