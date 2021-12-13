@@ -12,6 +12,7 @@ import {
   Button,
   Alert,
   ScrollView,
+  KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import * as Location from 'expo-location';
@@ -68,29 +69,34 @@ const App = () => {
   }
 
   return (
-    <SafeAreaView style={styles.page}>
-      <ScrollView style={styles.scrollView}>
-        <Text style={styles.header}>take me home</Text>
-        <View style={styles.container}>
-          {image}
-          <Text style={styles.debug}>{postitionStatus}</Text>
-          <Text style={{ color: 'white' }}>
-            {'Please insert your destination'}
-          </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={setDestinationText}
-            value={destinationText}
-          />
-          <Button
-            onPress={() => setDestinationTextInStorage(destinationText)}
-            title='Save Destination'
-            color='#841584'
-          />
-          <StatusBar style='light' hidden={false} />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.keyboardContainer}
+    >
+      <SafeAreaView style={styles.page}>
+        <ScrollView style={styles.scrollView}>
+          <Text style={styles.header}>take me home</Text>
+          <View style={styles.container}>
+            {image}
+            <Text style={styles.debug}>{postitionStatus}</Text>
+            <Text style={{ color: 'white' }}>
+              {'Please insert your destination'}
+            </Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={setDestinationText}
+              value={destinationText}
+            />
+            <Button
+              onPress={() => setDestinationTextInStorage(destinationText)}
+              title='Save Destination'
+              color='#841584'
+            />
+            <StatusBar style='light' hidden={false} />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -213,6 +219,9 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: '#000',
     marginHorizontal: 5,
+  },
+  keyboardContainer: {
+    flex: 1,
   },
 });
 
