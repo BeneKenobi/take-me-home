@@ -1,11 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   StyleSheet,
   Text,
   SafeAreaView,
   Image,
   Dimensions,
+  TextInput,
+  View,
+  Button,
+  Alert,
+  ScrollView,
 } from 'react-native';
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
@@ -14,7 +20,16 @@ const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
 
 const App = () => {
+  const [destinationText, setDestinationText] = useState('');
+
+  useEffect(() => {
+    getDestinationTextFromStorage().then((storedDestinationText) => {
+      setDestinationText(storedDestinationText);
+    });
+  }, []);
+
   let googleApiKey: string;
+
   if (Constants.platform?.ios != undefined) {
     googleApiKey = Constants?.manifest?.extra?.googleApiKeyIos;
   } else if (Constants.platform?.android != undefined) {
@@ -53,10 +68,27 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.page}>
-      <Text style={styles.text}>take me home</Text>
-      {image}
-      <Text style={styles.debug}>{postitionStatus}</Text>
-      <StatusBar style='light' hidden={false} />
+      <Text style={styles.header}>take me home</Text>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.container}>
+          {image}
+          <Text style={styles.debug}>{postitionStatus}</Text>
+          <Text style={{ color: 'white' }}>
+            {'Please insert your destination'}
+          </Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={setDestinationText}
+            value={destinationText}
+          />
+          <Button
+            onPress={() => setDestinationTextInStorage(destinationText)}
+            title='Save Destination'
+            color='#841584'
+          />
+          <StatusBar style='light' hidden={false} />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -117,6 +149,27 @@ const getGoogleMapsImage = (
   );
 };
 
+const setDestinationTextInStorage = async (value: string) => {
+  try {
+    await AsyncStorage.setItem('destinationText', value);
+  } catch (e) {
+    // save error
+  }
+  Alert.alert('Gespeichert');
+};
+
+const getDestinationTextFromStorage = async (): Promise<string> => {
+  try {
+    const value = await AsyncStorage.getItem('destinationText');
+    if (value !== null) {
+      return value;
+    }
+  } catch (e) {
+    // error reading value
+  }
+  return 'test';
+};
+
 const styles = StyleSheet.create({
   page: {
     flex: 1,
@@ -124,9 +177,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  header: {
+    flex: 1,
+    color: 'white',
+    fontSize: 50,
+  },
   text: {
     color: 'white',
-    fontSize: 100,
+    fontSize: 50,
   },
   debug: {
     color: 'white',
@@ -135,6 +193,25 @@ const styles = StyleSheet.create({
   mapImage: {
     width: 400,
     height: 400,
+  },
+  input: {
+    width: 250,
+    height: 44,
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: '#e8e8e8',
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: 20,
+    backgroundColor: '#000',
+    justifyContent: 'center',
+  },
+  scrollView: {
+    backgroundColor: '#000',
+    marginHorizontal: 5,
   },
 });
 
