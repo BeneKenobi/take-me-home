@@ -12,7 +12,7 @@
     "eject": "expo eject",
     "deploy": "gh-pages -d web-build",
     "predeploy": "expo build:web",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --format stylish"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --format compact"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.15.0",
