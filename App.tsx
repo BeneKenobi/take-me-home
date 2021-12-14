@@ -136,12 +136,24 @@ const getGoogleMapsImage = (
 
 const App = () => {
   const [destinationText, setDestinationText] = useState('');
-
   useEffect(() => {
     getDestinationTextFromStorage().then((storedDestinationText) => {
       setDestinationText(storedDestinationText);
     });
   }, []);
+
+  const [dimensions, setDimensions] = useState({ window, screen });
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener(
+      'change',
+      // eslint-disable-next-line no-shadow
+      ({ window, screen }) => {
+        setDimensions({ window, screen });
+      },
+    );
+    // @ts-expect-error: Property 'remove' does not exist on type 'never'.
+    return () => subscription?.remove();
+  });
 
   let googleApiKey: string;
 
@@ -162,19 +174,6 @@ const App = () => {
       </SafeAreaView>
     );
   }
-
-  const [dimensions, setDimensions] = useState({ window, screen });
-  useEffect(() => {
-    const subscription = Dimensions.addEventListener(
-      'change',
-      // eslint-disable-next-line no-shadow
-      ({ window, screen }) => {
-        setDimensions({ window, screen });
-      },
-    );
-    // @ts-expect-error: Property 'remove' does not exist on type 'never'.
-    return () => subscription?.remove();
-  });
 
   const [postitionStatus, location] = GetPosition();
 
