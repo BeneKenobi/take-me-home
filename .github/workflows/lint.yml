@@ -1,5 +1,7 @@
 name: Lint
-on: push
+on: 
+  push:
+  pull_request:
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -13,6 +15,8 @@ jobs:
         cache: 'yarn'
     - name: Install dependencies
       run: yarn install
-    - name: Run ESLint
-      run: yarn lint
-      continue-on-error: true
+    - name: Run linter
+      uses: wearerequired/lint-action@v1
+      with:
+        eslint: true
+        eslint_extensions: js,ts,jsx,tsx
