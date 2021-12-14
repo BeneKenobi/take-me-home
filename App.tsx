@@ -16,10 +16,14 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import styles from './Styles';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
+
+const Stack = createNativeStackNavigator();
 
 const setDestinationTextInStorage = async (value: string) => {
   try {
@@ -86,7 +90,8 @@ const getGoogleMapsImage = (
   );
 };
 
-const App = () => {
+// eslint-disable-next-line react/prop-types
+const HomeScreen = ({ navigation } ) => {
   const [destinationText, setDestinationText] = useState('');
   useEffect(() => {
     getDestinationTextFromStorage().then((storedDestinationText) => {
@@ -142,8 +147,14 @@ const App = () => {
     >
       <SafeAreaView style={styles.page}>
         <ScrollView style={styles.scrollView}>
-          <Text style={styles.header}>take me home</Text>
           <View style={styles.container}>
+            <Button
+              title="Go to Settings"
+              // eslint-disable-next-line react/destructuring-assignment
+              // eslint-disable-next-line react/prop-types
+              onPress={() => navigation.navigate('settings')}
+              color="#000"
+            />
             {image}
             <Text style={styles.debug}>{postitionStatus}</Text>
             <Text style={{ color: 'white' }}>
@@ -167,5 +178,33 @@ const App = () => {
     </KeyboardAvoidingView>
   );
 };
+
+const SettingsScreen = () => (
+  <View style={styles.page}>
+    <Text style={{ color: 'white' }}>
+      Here are the Settings
+    </Text>
+  </View>
+);
+
+const App = () => (
+  <NavigationContainer>
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#000',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
+      <Stack.Screen name="take me home" component={HomeScreen} />
+      <Stack.Screen name="settings" component={SettingsScreen} />
+    </Stack.Navigator>
+  </NavigationContainer>
+);
 
 export default App;
