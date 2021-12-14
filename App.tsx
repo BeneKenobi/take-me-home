@@ -128,7 +128,8 @@ const getGoogleMapsImage = (
       style={{ width: size, height: size }}
       source={{
         uri:
-        `https://maps.googleapis.com/maps/api/staticmap?center=${location.coords.latitude},${location.coords.longitude}&markers=${location.coords.latitude},${location.coords.longitude}&zoom=14&size=${size}x${size}&scale=2&key=${googleApiKey}`}}
+        `https://maps.googleapis.com/maps/api/staticmap?center=${location.coords.latitude},${location.coords.longitude}&markers=${location.coords.latitude},${location.coords.longitude}&zoom=14&size=${size}x${size}&scale=2&key=${googleApiKey}`,
+      }}
     />
   );
 };
@@ -156,6 +157,7 @@ const App = () => {
     return (
       <SafeAreaView style={styles.page}>
         <Text style={styles.text}>API Key Error</Text>
+        {/* eslint-disable-next-line react/style-prop-object */}
         <StatusBar style="light" hidden={false} />
       </SafeAreaView>
     );
@@ -165,10 +167,12 @@ const App = () => {
   useEffect(() => {
     const subscription = Dimensions.addEventListener(
       'change',
+      // eslint-disable-next-line no-shadow
       ({ window, screen }) => {
         setDimensions({ window, screen });
       },
     );
+    // @ts-expect-error: Property 'remove' does not exist on type 'never'.
     return () => subscription?.remove();
   });
 
@@ -204,6 +208,7 @@ const App = () => {
               title="Save Destination"
               color="#841584"
             />
+            {/* eslint-disable-next-line react/style-prop-object */}
             <StatusBar style="light" hidden={false} />
           </View>
         </ScrollView>
