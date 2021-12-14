@@ -27,6 +27,22 @@
             "namedComponents": "arrow-function",
             "unnamedComponents": "arrow-function"
         }],
-        "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }]
+        "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
+        "import/extensions": [2, {
+            "js": "never",
+            "jsx": "never",
+            "ts": "never",
+            "tsx": "never"
+        }]
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".ts", ".tsx", ".js", ".jsx"]
+            }
+        },
+        "import/parsers": {
+            "@typescript-eslint/parser": [".ts", ".tsx"]
+          }
     }
 }
