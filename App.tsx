@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
+  Share,
   Text,
   SafeAreaView,
   Image,
@@ -20,6 +21,25 @@ import styles from './Styles';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
+
+const onShare = async (messageToShare: string) => {
+  try {
+    const result = await Share.share({
+      message: `Destination ${messageToShare}`,
+    });
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // shared with activity type of result.activityType
+      } else {
+        // shared
+      }
+    } else if (result.action === Share.dismissedAction) {
+      // dismissed
+    }
+  } catch (e) {
+    Alert.alert('Error while sharing');
+  }
+};
 
 const setDestinationTextInStorage = async (value: string) => {
   try {
@@ -204,6 +224,11 @@ const App = () => {
             <Button
               onPress={() => setDestinationTextInStorage(destinationText)}
               title="Save Destination"
+              color="#841584"
+            />
+            <Button
+              onPress={() => onShare(destinationText)}
+              title="Share"
               color="#841584"
             />
             {/* eslint-disable-next-line react/style-prop-object */}
