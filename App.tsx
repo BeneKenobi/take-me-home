@@ -42,9 +42,9 @@ const getDestinationTextFromStorage = async (): Promise<string> => {
   return '';
 };
 
-const GetPosition = (): [string, Location.LocationObject | undefined] => {
+const GetPosition = (): [string, { lat: string, lng: string } | undefined] => {
   const [resultText, setResult] = useState('Waiting for permission...');
-  const [location, setLocation] = useState<Location.LocationObject | undefined>(
+  const [location, setLocation] = useState<{ lat: string, lng: string } | undefined>(
     undefined,
   );
 
@@ -58,7 +58,11 @@ const GetPosition = (): [string, Location.LocationObject | undefined] => {
       } else {
         setResult('Getting your location...');
         (async () => {
-          setLocation(await Location.getCurrentPositionAsync({}));
+          const resultLocation = await Location.getCurrentPositionAsync({});
+          setLocation({
+            lat: resultLocation.coords.latitude.toString(),
+            lng: resultLocation.coords.longitude.toString(),
+          });
           setResult('done');
         })();
       }
@@ -68,20 +72,44 @@ const GetPosition = (): [string, Location.LocationObject | undefined] => {
   return [resultText, location];
 };
 
-const getGoogleMapsImage = (
-  googleApiKey: string,
-  location: Location.LocationObject,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dimensions: any,
+const GoogleMapsImage = (
+  props: {
+    location: {
+      lat: string;
+      lng: string;
+    } | undefined;
+    width: number;
+    height: number;
+    googleApiKey: string;
+    destination: {
+      lat: string;
+      lng: string;
+    } | undefined;
+  },
 ) => {
-  const size = Math.min(dimensions.window.width, dimensions.window.height, 400);
+  const {
+    location, width, height, googleApiKey, destination,
+  } = props;
+  if (location === undefined) {
+    return null;
+  }
+  const size = Math.min(width, height, 400);
+  const params: { size: string, scale: number, key: string, markers: string } = {
+    size: `${size}x${size}`, scale: 2, key: googleApiKey, markers: '',
+  };
+  let markers = `${location.lat},${location.lng}`;
+  if (destination !== undefined) {
+    markers += `|${destination.lat},${destination.lng}`;
+  }
+  params.markers = markers;
+  let imageUri = 'https://maps.googleapis.com/maps/api/staticmap?';
+  Object.entries(params).forEach(([paramsKey, paramsValue]) => {
+    imageUri += `${paramsKey}=${paramsValue}&`;
+  });
   return (
     <Image
       style={{ width: size, height: size }}
-      source={{
-        uri:
-        `https://maps.googleapis.com/maps/api/staticmap?center=${location.coords.latitude},${location.coords.longitude}&markers=${location.coords.latitude},${location.coords.longitude}&zoom=14&size=${size}x${size}&scale=2&key=${googleApiKey}`,
-      }}
+      source={{ uri: imageUri }}
     />
   );
 };
@@ -117,6 +145,26 @@ const App = () => {
     googleApiKey = Constants?.manifest?.extra?.googleApiKeyWeb;
   }
 
+  // eslint-disable-next-line max-len
+  const [destinationCoords, setDestinationCoords] = useState<{ lat: string, lng: string } | undefined>(
+    undefined,
+  );
+  useEffect(() => {
+    (async () => {
+      if (destinationText.length > 0) {
+        const request = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${destinationText}&key=${googleApiKey}`,
+        );
+        const response = await request.json();
+        if (response.results.length > 0) {
+          if (response.status === 'OK') {
+            setDestinationCoords(response.results[0].geometry.location);
+          }
+        }
+      }
+    })();
+  }, [destinationText, googleApiKey]);
+
   if (googleApiKey === undefined) {
     return (
       <SafeAreaView style={styles.page}>
@@ -126,14 +174,7 @@ const App = () => {
       </SafeAreaView>
     );
   }
-
   const [postitionStatus, location] = GetPosition();
-
-  let image;
-
-  if (location !== undefined) {
-    image = getGoogleMapsImage(googleApiKey, location, dimensions);
-  }
 
   return (
     <KeyboardAvoidingView
@@ -144,8 +185,14 @@ const App = () => {
         <ScrollView style={styles.scrollView}>
           <Text style={styles.header}>take me home</Text>
           <View style={styles.container}>
-            {image}
-            <Text style={styles.debug}>{postitionStatus}</Text>
+            {postitionStatus !== 'done' ? <Text style={styles.debug}>{postitionStatus}</Text> : null}
+            <GoogleMapsImage
+              width={dimensions.window.width}
+              height={dimensions.window.height}
+              googleApiKey={googleApiKey}
+              location={location}
+              destination={destinationCoords}
+            />
             <Text style={{ color: 'white' }}>
               Please insert your destination
             </Text>
