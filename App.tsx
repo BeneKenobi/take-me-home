@@ -134,6 +134,16 @@ const GoogleMapsImage = (
   );
 };
 
+const getGoogleApiKey = () => {
+  if (Platform.OS === 'ios') {
+    return Constants?.manifest?.extra?.googleApiKeyIos;
+  }
+  if (Platform.OS === 'android') {
+    return Constants?.manifest?.extra?.googleApiKeyAndroid;
+  }
+  return Constants?.manifest?.extra?.googleApiKeyWeb;
+};
+
 const App = () => {
   const [destinationText, setDestinationText] = useState('');
   useEffect(() => {
@@ -155,15 +165,7 @@ const App = () => {
     return () => subscription?.remove();
   });
 
-  let googleApiKey: string;
-
-  if (Platform.OS === 'ios') {
-    googleApiKey = Constants?.manifest?.extra?.googleApiKeyIos;
-  } else if (Platform.OS === 'android') {
-    googleApiKey = Constants?.manifest?.extra?.googleApiKeyAndroid;
-  } else {
-    googleApiKey = Constants?.manifest?.extra?.googleApiKeyWeb;
-  }
+  const googleApiKey = getGoogleApiKey();
 
   // eslint-disable-next-line max-len
   const [destinationCoords, setDestinationCoords] = useState<{ lat: string, lng: string } | undefined>(
