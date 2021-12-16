@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
+  Share,
   Text,
   SafeAreaView,
   Image,
@@ -20,6 +21,25 @@ import styles from './Styles';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
+
+const onShare = async (messageToShare: string) => {
+  try {
+    const result = await Share.share({
+      message: `Destination ${messageToShare}`,
+    });
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // shared with activity type of result.activityType
+      } else {
+        // shared
+      }
+    } else if (result.action === Share.dismissedAction) {
+      // dismissed
+    }
+  } catch (e) {
+    Alert.alert('Error while sharing');
+  }
+};
 
 const setDestinationTextInStorage = async (value: string) => {
   try {
@@ -114,6 +134,16 @@ const GoogleMapsImage = (
   );
 };
 
+const getGoogleApiKey = () => {
+  if (Platform.OS === 'ios') {
+    return Constants?.manifest?.extra?.googleApiKeyIos;
+  }
+  if (Platform.OS === 'android') {
+    return Constants?.manifest?.extra?.googleApiKeyAndroid;
+  }
+  return Constants?.manifest?.extra?.googleApiKeyWeb;
+};
+
 const App = () => {
   const [destinationText, setDestinationText] = useState('');
   useEffect(() => {
@@ -135,15 +165,7 @@ const App = () => {
     return () => subscription?.remove();
   });
 
-  let googleApiKey: string;
-
-  if (Platform.OS === 'ios') {
-    googleApiKey = Constants?.manifest?.extra?.googleApiKeyIos;
-  } else if (Platform.OS === 'android') {
-    googleApiKey = Constants?.manifest?.extra?.googleApiKeyAndroid;
-  } else {
-    googleApiKey = Constants?.manifest?.extra?.googleApiKeyWeb;
-  }
+  const googleApiKey = getGoogleApiKey();
 
   // eslint-disable-next-line max-len
   const [destinationCoords, setDestinationCoords] = useState<{ lat: string, lng: string } | undefined>(
@@ -204,6 +226,11 @@ const App = () => {
             <Button
               onPress={() => setDestinationTextInStorage(destinationText)}
               title="Save Destination"
+              color="#841584"
+            />
+            <Button
+              onPress={() => onShare(destinationText)}
+              title="Share"
               color="#841584"
             />
             {/* eslint-disable-next-line react/style-prop-object */}
