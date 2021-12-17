@@ -8,7 +8,8 @@
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:prettier/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -19,6 +20,7 @@
         "sourceType": "module"
     },
     "plugins": [
+        "prettier",
         "react",
         "@typescript-eslint"
     ],
@@ -33,7 +35,8 @@
             "jsx": "never",
             "ts": "never",
             "tsx": "never"
-        }]
+        }],
+        "prettier/prettier": ["error", {"singleQuote": true, "parser": "flow"}]
     },
     "settings": {
         "import/resolver": {
