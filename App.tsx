@@ -62,64 +62,45 @@ const getDestinationTextFromStorage = async (): Promise<string> => {
   return '';
 };
 
-const GetPosition = (): [string, { lat: string, lng: string } | undefined] => {
-  const [resultText, setResult] = useState('Waiting for permission...');
-  const [location, setLocation] = useState<{ lat: string, lng: string } | undefined>(
-    undefined,
-  );
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setResult(
-          'Permission to access location was denied. Please change your settings manually to use this app.',
-        );
-      } else {
-        setResult('Getting your location...');
-        (async () => {
-          const resultLocation = await Location.getCurrentPositionAsync({});
-          setLocation({
-            lat: resultLocation.coords.latitude.toString(),
-            lng: resultLocation.coords.longitude.toString(),
-          });
-          setResult('done');
-        })();
+const GoogleMapsImage = (props: {
+  location:
+    | {
+        lat: number,
+        lng: number,
       }
-    })();
-  }, []);
-
-  return [resultText, location];
-};
-
-const GoogleMapsImage = (
-  props: {
-    location: {
-      lat: string;
-      lng: string;
-    } | undefined;
-    width: number;
-    height: number;
-    googleApiKey: string;
-    destination: {
-      lat: string;
-      lng: string;
-    } | undefined;
-  },
-) => {
-  const {
-    location, width, height, googleApiKey, destination,
-  } = props;
+    | undefined,
+  width: number,
+  height: number,
+  googleApiKey: string,
+  destination:
+    | {
+        lat: number,
+        lng: number,
+      }
+    | undefined,
+}) => {
+  const { location, width, height, googleApiKey, destination } = props;
   if (location === undefined) {
     return null;
   }
   const size = Math.min(width, height, 400);
-  const params: { size: string, scale: number, key: string, markers: string } = {
-    size: `${size}x${size}`, scale: 2, key: googleApiKey, markers: '',
+  const params: {
+    size: string,
+    scale: number,
+    key: string,
+    markers: string,
+    path: string,
+  } = {
+    size: `${size}x${size}`,
+    scale: 2,
+    key: googleApiKey,
+    markers: '',
+    path: '',
   };
   let markers = `${location.lat},${location.lng}`;
   if (destination !== undefined) {
     markers += `|${destination.lat},${destination.lng}`;
+    params.path = `color:0x0000ff80|weight:5|${location.lat},${location.lng}|${destination.lat},${destination.lng}`;
   }
   params.markers = markers;
   let imageUri = 'https://maps.googleapis.com/maps/api/staticmap?';
@@ -127,10 +108,7 @@ const GoogleMapsImage = (
     imageUri += `${paramsKey}=${paramsValue}&`;
   });
   return (
-    <Image
-      style={{ width: size, height: size }}
-      source={{ uri: imageUri }}
-    />
+    <Image style={{ width: size, height: size }} source={{ uri: imageUri }} />
   );
 };
 
@@ -144,7 +122,34 @@ const getGoogleApiKey = () => {
   return Constants?.manifest?.extra?.googleApiKeyWeb;
 };
 
+const googleApiKey = getGoogleApiKey();
+
 const App = () => {
+  const [location, setLocation] = useState<
+    { lat: number, lng: number } | undefined
+  >(undefined);
+  const [locationStatus, setLocationStatus] = useState('Loading...');
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setLocationStatus(
+          'Permission to access location was denied. Please change your settings manually to use this app.'
+        );
+      } else {
+        setLocationStatus('Getting your location...');
+        (async () => {
+          const resultLocation = await Location.getCurrentPositionAsync({});
+          setLocation({
+            lat: resultLocation.coords.latitude,
+            lng: resultLocation.coords.longitude,
+          });
+          setLocationStatus('done');
+        })();
+      }
+    })();
+  }, []);
+
   const [destinationText, setDestinationText] = useState('');
   useEffect(() => {
     getDestinationTextFromStorage().then((storedDestinationText) => {
@@ -159,23 +164,20 @@ const App = () => {
       // eslint-disable-next-line no-shadow
       ({ window, screen }) => {
         setDimensions({ window, screen });
-      },
+      }
     );
     // @ts-expect-error: Property 'remove' does not exist on type 'never'.
     return () => subscription?.remove();
   });
 
-  const googleApiKey = getGoogleApiKey();
-
-  // eslint-disable-next-line max-len
-  const [destinationCoords, setDestinationCoords] = useState<{ lat: string, lng: string } | undefined>(
-    undefined,
-  );
+  const [destinationCoords, setDestinationCoords] = useState<
+    { lat: number, lng: number } | undefined
+  >(undefined);
   useEffect(() => {
     (async () => {
       if (destinationText.length > 0) {
         const request = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${destinationText}&key=${googleApiKey}`,
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${destinationText}&key=${googleApiKey}`
         );
         const response = await request.json();
         if (response.results.length > 0) {
@@ -185,7 +187,7 @@ const App = () => {
         }
       }
     })();
-  }, [destinationText, googleApiKey]);
+  }, [destinationText]);
 
   if (googleApiKey === undefined) {
     return (
@@ -196,7 +198,6 @@ const App = () => {
       </SafeAreaView>
     );
   }
-  const [postitionStatus, location] = GetPosition();
 
   return (
     <KeyboardAvoidingView
@@ -207,7 +208,9 @@ const App = () => {
         <ScrollView style={styles.scrollView}>
           <Text style={styles.header}>take me home</Text>
           <View style={styles.container}>
-            {postitionStatus !== 'done' ? <Text style={styles.debug}>{postitionStatus}</Text> : null}
+            {locationStatus !== 'done' ? (
+              <Text style={styles.debug}>{locationStatus}</Text>
+            ) : null}
             <GoogleMapsImage
               width={dimensions.window.width}
               height={dimensions.window.height}
