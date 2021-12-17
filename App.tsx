@@ -189,6 +189,71 @@ const App = () => {
     })();
   }, [destinationText]);
 
+  const [travelTime, setTravelTime] = useState<{
+    driving: string | undefined,
+    walking: string | undefined,
+    bicycling: string | undefined,
+    transit: string | undefined,
+  }>({
+    driving: undefined,
+    walking: undefined,
+    bicycling: undefined,
+    transit: undefined,
+  });
+  useEffect(() => {
+    (async () => {
+      if (
+        destinationCoords !== undefined &&
+        locationStatus === 'done' &&
+        location !== undefined
+      ) {
+        let results: {
+          driving: string | undefined,
+          walking: string | undefined,
+          bicycling: string | undefined,
+          transit: string | undefined,
+        } = {
+          driving: undefined,
+          walking: undefined,
+          bicycling: undefined,
+          transit: undefined,
+        };
+        // we need a for loop because we need to await each request
+        // eslint-disable-next-line no-restricted-syntax
+        for (const mode of Object.keys(results)) {
+          // eslint-disable-next-line no-await-in-loop
+          const request = await fetch(
+            'https://europe-west3-take-me-home-334010.cloudfunctions.net/getTravelDurations',
+            {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                origin: `${location.lat},${location.lng}`,
+                destination: `${destinationCoords.lat},${destinationCoords.lng}`,
+                mode,
+                key: googleApiKey,
+              }),
+            }
+          );
+          // eslint-disable-next-line no-await-in-loop
+          const response = await request.json();
+          if (response.rows.length > 0) {
+            if (response.status === 'OK') {
+              results = {
+                ...results,
+                [mode]: response.rows[0].elements[0].duration.text,
+              };
+            }
+          }
+        }
+        setTravelTime(results);
+      }
+    })();
+  }, [destinationCoords, location, locationStatus]);
+
   if (googleApiKey === undefined) {
     return (
       <SafeAreaView style={styles.page}>
@@ -231,6 +296,7 @@ const App = () => {
               title="Save Destination"
               color="#841584"
             />
+            <Text style={styles.debug}>{JSON.stringify(travelTime)}</Text>
             <Button
               onPress={() => onShare(destinationText)}
               title="Share"
