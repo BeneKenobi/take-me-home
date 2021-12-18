@@ -323,7 +323,7 @@ const App = () => {
                     )} to walk to ${destinationTextSaved}.`
                   )
                 }
-                title={`Walking takes ${formatTravelTime(
+                title={`🚶 ${formatTravelTime(
                   JSON.stringify(travelTime.walking)
                 )}`}
                 color="#841584"
@@ -338,7 +338,7 @@ const App = () => {
                     )} on my bike to ${destinationTextSaved}.`
                   )
                 }
-                title={`Bicycling takes ${formatTravelTime(
+                title={`🚴 ${formatTravelTime(
                   JSON.stringify(travelTime.bicycling)
                 )}`}
                 color="#841584"
@@ -353,7 +353,7 @@ const App = () => {
                     )} via transit to ${destinationTextSaved}.`
                   )
                 }
-                title={`Transit takes ${formatTravelTime(
+                title={`🚌 ${formatTravelTime(
                   JSON.stringify(travelTime.transit)
                 )}`}
                 color="#841584"
@@ -368,7 +368,7 @@ const App = () => {
                     )} to drive to ${destinationTextSaved}.`
                   )
                 }
-                title={`Driving takes ${formatTravelTime(
+                title={`🚗 ${formatTravelTime(
                   JSON.stringify(travelTime.driving)
                 )}`}
                 color="#841584"
