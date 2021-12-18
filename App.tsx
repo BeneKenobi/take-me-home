@@ -151,9 +151,11 @@ const App = () => {
   }, []);
 
   const [destinationText, setDestinationText] = useState('');
+  const [destinationTextSaved, setDestinationTextSaved] = useState('');
   useEffect(() => {
     getDestinationTextFromStorage().then((storedDestinationText) => {
       setDestinationText(storedDestinationText);
+      setDestinationTextSaved(storedDestinationText);
     });
   }, []);
 
@@ -175,19 +177,22 @@ const App = () => {
   >(undefined);
   useEffect(() => {
     (async () => {
-      if (destinationText.length > 0) {
+      if (destinationTextSaved.length > 0) {
         const request = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${destinationText}&key=${googleApiKey}`
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${destinationTextSaved}&key=${googleApiKey}`
         );
         const response = await request.json();
         if (response.results.length > 0) {
-          if (response.status === 'OK') {
+          if (
+            response.status === 'OK' &&
+            response.results[0]?.geometry?.location !== undefined
+          ) {
             setDestinationCoords(response.results[0].geometry.location);
           }
         }
       }
     })();
-  }, [destinationText]);
+  }, [destinationTextSaved]);
 
   const [travelTime, setTravelTime] = useState<{
     driving: string | undefined,
@@ -296,13 +301,16 @@ const App = () => {
               value={destinationText}
             />
             <Button
-              onPress={() => setDestinationTextInStorage(destinationText)}
+              onPress={() => {
+                setDestinationTextInStorage(destinationText);
+                setDestinationTextSaved(destinationText);
+              }}
               title="Save Destination"
               color="#841584"
             />
             <Text style={styles.debug}>{JSON.stringify(travelTime)}</Text>
             <Button
-              onPress={() => onShare(destinationText)}
+              onPress={() => onShare(destinationTextSaved)}
               title="Share"
               color="#841584"
             />
