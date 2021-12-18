@@ -242,10 +242,14 @@ const App = () => {
           const response = await request.json();
           if (response.rows.length > 0) {
             if (response.status === 'OK') {
-              results = {
-                ...results,
-                [mode]: response.rows[0].elements[0].duration.text,
-              };
+              if (
+                response?.rows[0]?.elements[0]?.duration?.value !== undefined
+              ) {
+                results = {
+                  ...results,
+                  [mode]: response.rows[0].elements[0].duration.value,
+                };
+              }
             }
           }
         }
