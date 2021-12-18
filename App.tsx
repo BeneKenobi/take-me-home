@@ -26,7 +26,7 @@ const screen = Dimensions.get('screen');
 const onShare = async (messageToShare: string) => {
   try {
     const result = await Share.share({
-      message: `Destination ${messageToShare}`,
+      message: `${messageToShare}`,
     });
     if (result.action === Share.sharedAction) {
       if (result.activityType) {
@@ -274,6 +274,10 @@ const App = () => {
     );
   }
 
+  const formatTravelTime = (value: string) => {
+    return moment.duration(value, 'seconds').locale('en').humanize();
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -310,11 +314,66 @@ const App = () => {
               color="#841584"
             />
             <Text style={styles.debug}>{JSON.stringify(travelTime)}</Text>
-            <Button
-              onPress={() => onShare(destinationTextSaved)}
-              title="Share"
-              color="#841584"
-            />
+            {travelTime.walking !== undefined ? (
+              <Button
+                onPress={() =>
+                  onShare(
+                    `I need ${formatTravelTime(
+                      JSON.stringify(travelTime.walking)
+                    )} to walk to ${destinationTextSaved}.`
+                  )
+                }
+                title={`Walking takes ${formatTravelTime(
+                  JSON.stringify(travelTime.walking)
+                )}`}
+                color="#841584"
+              />
+            ) : null}
+            {travelTime.bicycling !== undefined ? (
+              <Button
+                onPress={() =>
+                  onShare(
+                    `I need ${formatTravelTime(
+                      JSON.stringify(travelTime.bicycling)
+                    )} on my bike to ${destinationTextSaved}.`
+                  )
+                }
+                title={`Bicycling takes ${formatTravelTime(
+                  JSON.stringify(travelTime.bicycling)
+                )}`}
+                color="#841584"
+              />
+            ) : null}
+            {travelTime.transit !== undefined ? (
+              <Button
+                onPress={() =>
+                  onShare(
+                    `I need ${formatTravelTime(
+                      JSON.stringify(travelTime.transit)
+                    )} via transit to ${destinationTextSaved}.`
+                  )
+                }
+                title={`Transit takes ${formatTravelTime(
+                  JSON.stringify(travelTime.transit)
+                )}`}
+                color="#841584"
+              />
+            ) : null}
+            {travelTime.driving !== undefined ? (
+              <Button
+                onPress={() =>
+                  onShare(
+                    `I need ${formatTravelTime(
+                      JSON.stringify(travelTime.driving)
+                    )} to drive to ${destinationTextSaved}.`
+                  )
+                }
+                title={`Driving takes ${formatTravelTime(
+                  JSON.stringify(travelTime.driving)
+                )}`}
+                color="#841584"
+              />
+            ) : null}
             {/* eslint-disable-next-line react/style-prop-object */}
             <StatusBar style="light" hidden={false} />
           </View>
