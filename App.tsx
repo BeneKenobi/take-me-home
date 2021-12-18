@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
+import moment from 'moment';
 import styles from './Styles';
 
 const window = Dimensions.get('window');
