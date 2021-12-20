@@ -17,15 +17,16 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
+import humanizeDuration from 'humanize-duration';
 import styles from './Styles';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
 
-const onShare = async (messageToShare: string) => {
+const share = async (messageToShare: string) => {
   try {
     const result = await Share.share({
-      message: `Destination ${messageToShare}`,
+      message: `${messageToShare}`,
     });
     if (result.action === Share.sharedAction) {
       if (result.activityType) {
@@ -60,6 +61,15 @@ const getDestinationTextFromStorage = async (): Promise<string> => {
     // error reading value
   }
   return '';
+};
+
+const formatTravelTime = (value: number) => {
+  return humanizeDuration(value * 1000, {
+    largest: 2,
+    delimiter: ' and ',
+    units: ['d', 'h', 'm'],
+    round: true,
+  });
 };
 
 const GoogleMapsImage = (props: {
@@ -109,6 +119,58 @@ const GoogleMapsImage = (props: {
   });
   return (
     <Image style={{ width: size, height: size }} source={{ uri: imageUri }} />
+  );
+};
+
+const TravelTimeShareButton = (props: {
+  destination: string,
+  time: number,
+  mode: string,
+}) => {
+  const { time } = props;
+  const { destination } = props;
+  const { mode } = props;
+  let shareText = '';
+  let buttonTitle = '';
+  switch (mode) {
+    case 'driving': {
+      shareText = `I need ${formatTravelTime(
+        time
+      )} to drive to ${destination} 🚗`;
+      buttonTitle = `🚗 ${formatTravelTime(time)}`;
+      break;
+    }
+    case 'walking': {
+      shareText = `I need ${formatTravelTime(
+        time
+      )} to walk to ${destination} 🚶`;
+      buttonTitle = `🚶 ${formatTravelTime(time)}`;
+      break;
+    }
+    case 'transit': {
+      shareText = `I need ${formatTravelTime(
+        time
+      )} with public transport to ${destination} 🚌`;
+      buttonTitle = `🚌 ${formatTravelTime(time)}`;
+      break;
+    }
+    case 'bicycling': {
+      shareText = `I need ${formatTravelTime(
+        time
+      )} on my bike to ${destination} 🚴`;
+      buttonTitle = `🚴 ${formatTravelTime(time)}`;
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+  return (
+    <Button
+      onPress={() => share(shareText)}
+      title={buttonTitle}
+      color="#841584"
+    />
   );
 };
 
@@ -195,10 +257,10 @@ const App = () => {
   }, [destinationTextSaved]);
 
   const [travelTime, setTravelTime] = useState<{
-    driving: string | undefined,
-    walking: string | undefined,
-    bicycling: string | undefined,
-    transit: string | undefined,
+    driving: number | undefined,
+    walking: number | undefined,
+    bicycling: number | undefined,
+    transit: number | undefined,
   }>({
     driving: undefined,
     walking: undefined,
@@ -213,10 +275,10 @@ const App = () => {
         location !== undefined
       ) {
         let results: {
-          driving: string | undefined,
-          walking: string | undefined,
-          bicycling: string | undefined,
-          transit: string | undefined,
+          driving: number | undefined,
+          walking: number | undefined,
+          bicycling: number | undefined,
+          transit: number | undefined,
         } = {
           driving: undefined,
           walking: undefined,
@@ -305,15 +367,37 @@ const App = () => {
                 setDestinationTextInStorage(destinationText);
                 setDestinationTextSaved(destinationText);
               }}
-              title="Save Destination"
+              title="💾 Save Destination"
               color="#841584"
             />
-            <Text style={styles.debug}>{JSON.stringify(travelTime)}</Text>
-            <Button
-              onPress={() => onShare(destinationTextSaved)}
-              title="Share"
-              color="#841584"
-            />
+            {travelTime.walking !== undefined ? (
+              <TravelTimeShareButton
+                destination={destinationTextSaved}
+                mode="walking"
+                time={travelTime.walking}
+              />
+            ) : null}
+            {travelTime.bicycling !== undefined ? (
+              <TravelTimeShareButton
+                destination={destinationTextSaved}
+                mode="bicycling"
+                time={travelTime.bicycling}
+              />
+            ) : null}
+            {travelTime.transit !== undefined ? (
+              <TravelTimeShareButton
+                destination={destinationTextSaved}
+                mode="transit"
+                time={travelTime.transit}
+              />
+            ) : null}
+            {travelTime.driving !== undefined ? (
+              <TravelTimeShareButton
+                destination={destinationTextSaved}
+                mode="driving"
+                time={travelTime.driving}
+              />
+            ) : null}
             {/* eslint-disable-next-line react/style-prop-object */}
             <StatusBar style="light" hidden={false} />
           </View>
