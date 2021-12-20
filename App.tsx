@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
-import moment from 'moment';
+import * as humanizeDuration from 'humanize-duration'
 import styles from './Styles';
 
 const window = Dimensions.get('window');
@@ -196,10 +196,10 @@ const App = () => {
   }, [destinationTextSaved]);
 
   const [travelTime, setTravelTime] = useState<{
-    driving: string | undefined,
-    walking: string | undefined,
-    bicycling: string | undefined,
-    transit: string | undefined,
+    driving: number | undefined,
+    walking: number | undefined,
+    bicycling: number | undefined,
+    transit: number | undefined,
   }>({
     driving: undefined,
     walking: undefined,
@@ -214,10 +214,10 @@ const App = () => {
         location !== undefined
       ) {
         let results: {
-          driving: string | undefined,
-          walking: string | undefined,
-          bicycling: string | undefined,
-          transit: string | undefined,
+          driving: number | undefined,
+          walking: number | undefined,
+          bicycling: number | undefined,
+          transit: number | undefined,
         } = {
           driving: undefined,
           walking: undefined,
@@ -274,8 +274,8 @@ const App = () => {
     );
   }
 
-  const formatTravelTime = (value: string) => {
-    return moment.duration(value, 'seconds').locale('en').humanize();
+  const formatTravelTime = (value: number) => {
+    return humanizeDuration.default(value*1000, { largest: 2 });
   };
 
   return (
@@ -319,12 +319,12 @@ const App = () => {
                 onPress={() =>
                   onShare(
                     `I need ${formatTravelTime(
-                      JSON.stringify(travelTime.walking)
+                      travelTime.walking!
                     )} to walk to ${destinationTextSaved}.`
                   )
                 }
                 title={`🚶 ${formatTravelTime(
-                  JSON.stringify(travelTime.walking)
+                  travelTime.walking
                 )}`}
                 color="#841584"
               />
@@ -334,12 +334,12 @@ const App = () => {
                 onPress={() =>
                   onShare(
                     `I need ${formatTravelTime(
-                      JSON.stringify(travelTime.bicycling)
+                     travelTime.bicycling!
                     )} on my bike to ${destinationTextSaved}.`
                   )
                 }
                 title={`🚴 ${formatTravelTime(
-                  JSON.stringify(travelTime.bicycling)
+                  travelTime.bicycling!
                 )}`}
                 color="#841584"
               />
@@ -349,12 +349,12 @@ const App = () => {
                 onPress={() =>
                   onShare(
                     `I need ${formatTravelTime(
-                      JSON.stringify(travelTime.transit)
+                      travelTime.transit!
                     )} via transit to ${destinationTextSaved}.`
                   )
                 }
                 title={`🚌 ${formatTravelTime(
-                  JSON.stringify(travelTime.transit)
+                  travelTime.transit
                 )}`}
                 color="#841584"
               />
@@ -364,12 +364,12 @@ const App = () => {
                 onPress={() =>
                   onShare(
                     `I need ${formatTravelTime(
-                      JSON.stringify(travelTime.driving)
+                      travelTime.driving!
                     )} to drive to ${destinationTextSaved}.`
                   )
                 }
                 title={`🚗 ${formatTravelTime(
-                  JSON.stringify(travelTime.driving)
+                  travelTime.driving
                 )}`}
                 color="#841584"
               />
