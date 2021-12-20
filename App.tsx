@@ -17,13 +17,13 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
-import * as humanizeDuration from 'humanize-duration'
+import {default as humanizeDuration} from 'humanize-duration'
 import styles from './Styles';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
 
-const onShare = async (messageToShare: string) => {
+const share = async (messageToShare: string) => {
   try {
     const result = await Share.share({
       message: `${messageToShare}`,
@@ -61,6 +61,10 @@ const getDestinationTextFromStorage = async (): Promise<string> => {
     // error reading value
   }
   return '';
+};
+
+const formatTravelTime = (value: number) => {
+  return humanizeDuration(value*1000, { largest: 2 , delimiter: " and ", units: ["d", "h", "m"], round: true });
 };
 
 const GoogleMapsImage = (props: {
@@ -112,6 +116,47 @@ const GoogleMapsImage = (props: {
     <Image style={{ width: size, height: size }} source={{ uri: imageUri }} />
   );
 };
+
+const TravelTimeShareButton = (props: {
+  destination: string,
+  time: number,
+  mode: string,
+}) => {
+  let shareText = '';
+  let buttonTitle = '';
+  switch(props.mode) {
+    case 'driving': {
+      shareText = `I need ${formatTravelTime(props.time)} to drive to ${props.destination} 🚗`;
+      buttonTitle = `🚗 ${formatTravelTime(props.time)}`;
+      break;
+    }
+    case 'walking': {
+      shareText = `I need ${formatTravelTime(props.time)} to walk to ${props.destination} 🚶`;
+      buttonTitle = `🚶 ${formatTravelTime(props.time)}`;
+      break;
+    }
+    case 'transit': {
+      shareText = `I need ${formatTravelTime(props.time)} with public transport to ${props.destination} 🚌`;
+      buttonTitle = `🚌 ${formatTravelTime(props.time)}`;
+      break;
+    }
+    case 'bicycling': {
+      shareText = `I need ${formatTravelTime(props.time)} on my bike to ${props.destination} 🚴`;
+      buttonTitle = `🚴 ${formatTravelTime(props.time)}`;
+      break;
+    }
+  }
+  return (
+  <Button
+    onPress={() =>
+      share(shareText
+      )
+    }
+    title={buttonTitle}
+    color="#841584"
+  />
+  )
+}
 
 const getGoogleApiKey = () => {
   if (Platform.OS === 'ios') {
@@ -274,10 +319,6 @@ const App = () => {
     );
   }
 
-  const formatTravelTime = (value: number) => {
-    return humanizeDuration.default(value*1000, { largest: 2 });
-  };
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -310,69 +351,20 @@ const App = () => {
                 setDestinationTextInStorage(destinationText);
                 setDestinationTextSaved(destinationText);
               }}
-              title="Save Destination"
+              title="💾 Save Destination"
               color="#841584"
             />
-            <Text style={styles.debug}>{JSON.stringify(travelTime)}</Text>
             {travelTime.walking !== undefined ? (
-              <Button
-                onPress={() =>
-                  onShare(
-                    `I need ${formatTravelTime(
-                      travelTime.walking!
-                    )} to walk to ${destinationTextSaved}.`
-                  )
-                }
-                title={`🚶 ${formatTravelTime(
-                  travelTime.walking
-                )}`}
-                color="#841584"
-              />
+              <TravelTimeShareButton destination={destinationTextSaved} mode='walking' time={travelTime.walking} />
             ) : null}
             {travelTime.bicycling !== undefined ? (
-              <Button
-                onPress={() =>
-                  onShare(
-                    `I need ${formatTravelTime(
-                     travelTime.bicycling!
-                    )} on my bike to ${destinationTextSaved}.`
-                  )
-                }
-                title={`🚴 ${formatTravelTime(
-                  travelTime.bicycling!
-                )}`}
-                color="#841584"
-              />
+              <TravelTimeShareButton destination={destinationTextSaved} mode='bicycling' time={travelTime.bicycling} />
             ) : null}
             {travelTime.transit !== undefined ? (
-              <Button
-                onPress={() =>
-                  onShare(
-                    `I need ${formatTravelTime(
-                      travelTime.transit!
-                    )} via transit to ${destinationTextSaved}.`
-                  )
-                }
-                title={`🚌 ${formatTravelTime(
-                  travelTime.transit
-                )}`}
-                color="#841584"
-              />
+              <TravelTimeShareButton destination={destinationTextSaved} mode='transit' time={travelTime.transit} />
             ) : null}
             {travelTime.driving !== undefined ? (
-              <Button
-                onPress={() =>
-                  onShare(
-                    `I need ${formatTravelTime(
-                      travelTime.driving!
-                    )} to drive to ${destinationTextSaved}.`
-                  )
-                }
-                title={`🚗 ${formatTravelTime(
-                  travelTime.driving
-                )}`}
-                color="#841584"
-              />
+              <TravelTimeShareButton destination={destinationTextSaved} mode='driving' time={travelTime.driving} />
             ) : null}
             {/* eslint-disable-next-line react/style-prop-object */}
             <StatusBar style="light" hidden={false} />
