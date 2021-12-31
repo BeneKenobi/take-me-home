@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install ImageMagick
+        run: sudo apt update && sudo apt install imagemagick
+    
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -29,6 +32,9 @@ jobs:
           HIDE_CODEBLOCKS: 1
           ABSOLUTE_IMAGE_LINKS: 1
           OUTPUT_FILE_TYPE: "png"
+          
+      - name: Crop Images
+        run: magick mogrify -trim docs/*.png
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
