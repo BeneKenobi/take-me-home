@@ -13,7 +13,8 @@
 		"vivaxy.vscode-conventional-commits",
 		"tomoyukim.vscode-mermaid-editor",
 		"msjsdiag.vscode-react-native",
-		"github.vscode-pull-request-github"
+		"github.vscode-pull-request-github",
+		"bycedric.vscode-expo"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
