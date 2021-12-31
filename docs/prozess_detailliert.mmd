@@ -9,10 +9,9 @@ sequenceDiagram
     A->>N:Zeige initiale GUI
     A-)B:Ermittle gespeicherten Wert für das Ziel
     activate B
-    opt Gespeicherter Wet für Ziel vorhanden
-        B--)A:Gespeicherter Wert für Ziel
-        A->>N:Zeige Wert für Ziel in GUI
-    end
+    B--)A:Gespeicherter Wert für Ziel aus persistentem Speicher
+    Note over B,A: Der Wert ist ein leerer String falls kein Wert im persistenten Speicher gesetzt ist
+    A->>N:Zeige Wert für Ziel in GUI
     A-)B:Frage um Erlaubnis zur Loaktionsabfrage
     deactivate A
     opt Erlaubnis zur Lokationsabfrage wurde nicht zuvor erteilt oder verweigert
@@ -45,8 +44,9 @@ sequenceDiagram
         deactivate A
         activate W
     else Wert für Ziel noch nicht gesetzt 
-        N-)A:Setze Zielposition
+        N-)A:Setze Ziel über Eingabefeld und speichern
         activate A
+        A-)B:Speichere Ziel in persistenetem Speicher
         A-)W:Ermittle Koordinaten zum Ziel
         deactivate A
     end
