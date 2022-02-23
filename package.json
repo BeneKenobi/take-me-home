@@ -15,7 +15,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --format compact"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-env": "^7.16.11",
     "@react-native-async-storage/async-storage": "~1.16.1",
     "dotenv": "^10.0.0",
     "expo": "~44.0.6",
