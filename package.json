@@ -46,7 +46,7 @@
     "gh-pages": "^3.2.3",
     "mermaid": "^8.14.0",
     "prettier": "^2.5.1",
-    "typescript": "~4.5.5"
+    "typescript": "~4.6.2"
   },
   "private": true
 }
