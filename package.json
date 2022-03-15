@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@babel/preset-env": "^7.16.11",
-    "@react-native-async-storage/async-storage": "~1.16.1",
+    "@react-native-async-storage/async-storage": "~1.16.2",
     "dotenv": "^16.0.0",
     "expo": "~44.0.6",
     "expo-constants": "~13.0.2",
