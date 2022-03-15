@@ -29,7 +29,7 @@
     "react-native-web": "0.17.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.5",
+    "@babel/core": "^7.17.7",
     "@types/humanize-duration": "^3.27.1",
     "@types/react": "~17.0.40",
     "@types/react-native": "~0.67.3",
