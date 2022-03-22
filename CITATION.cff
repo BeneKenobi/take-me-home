@@ -1,0 +1,17 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: take-me-home
+message: Please cite this software using these metadata.
+type: software
+authors:
+  - given-names: Maximillian
+    family-names: Deycke
+  - given-names: Benedikt
+    family-names: Schnur
+    orcid: 'https://orcid.org/0000-0002-1977-7878'
+identifiers:
+  - type: url
+    value: 'https://github.com/BeneKenobi/take-me-home'
+license: MIT
