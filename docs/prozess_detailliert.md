@@ -1,3 +1,6 @@
+# Detaillierter Prozessablauf
+
+```mermaid
 sequenceDiagram
     autonumber
     actor N as Nutzer
@@ -74,3 +77,4 @@ sequenceDiagram
     N-)A:User klickt/drückt einen Button mit Reisezeit
     A->>B:Starte Teilen-Dialog mit Text zur Reisezeit
     B->>N:Zeige Teilen-Dialog
+```
