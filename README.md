@@ -9,7 +9,19 @@ You can easily checkout the latest version of branch `main` on your own device a
 
 ## process overview
 
-![prozess_ueberblick](https://github.com/BeneKenobi/take-me-home/raw/main/docs/prozess_ueberblick-mmd.png)
+```mermaid
+flowchart TD
+    idOA(Öffne App) --> idAL(Aktualisiere Lokation)
+    idAL --> idRA(Ermittle Reisedauer Auto)
+    idAL --> idRO(Ermittle Reisedauer öffentliche Verkehrsmittel)
+    idAL --> idRF(Ermittele Reisedauer Fahrrad)
+    idRA --> idZR(Zeige Reisedauern an)
+    idRO --> idZR
+    idRF --> idZR
+    idZR --> idTR(Tap auf Reisedauer)
+    idTR --> idTS(Generiere Text mit Verkehrsmittel und Reisedauer)
+    idTS --> idOS(Öffne Teilen-Dialog des Betriebssystems für generierten Text)
+```
 
 ## short developer intro
 
