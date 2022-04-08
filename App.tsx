@@ -230,7 +230,6 @@ const App = () => {
         setDimensions({ window, screen });
       }
     );
-    // @ts-expect-error: Property 'remove' does not exist on type 'never'.
     return () => subscription?.remove();
   });
 
