@@ -31,7 +31,7 @@
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "@types/humanize-duration": "^3.27.1",
-    "@types/react": "~17.0.43",
+    "@types/react": "~18.0.1",
     "@types/react-native": "~0.67.4",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
