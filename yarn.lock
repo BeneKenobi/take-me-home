@@ -1305,28 +1305,6 @@
     node-forge "^1.2.1"
     nullthrows "^1.1.1"
 
-"@expo/config-plugins@4.0.18":
-  version "4.0.18"
-  resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-4.0.18.tgz#80cf6a3aed83e78f714ad097d80e5a7cca48591a"
-  integrity sha512-tW4bnrnKhn+PPHF8wf1KAoubICAVUHW8CcagvyFqaRIzeh6yavMIOsQShxOVTbgx7LzSyymZ1nEs45yCGAiMfA==
-  dependencies:
-    "@expo/config-types" "^44.0.0"
-    "@expo/json-file" "8.2.34"
-    "@expo/plist" "0.0.17"
-    "@expo/sdk-runtime-versions" "^1.0.0"
-    "@react-native/normalize-color" "^2.0.0"
-    chalk "^4.1.2"
-    debug "^4.3.1"
-    find-up "~5.0.0"
-    fs-extra "9.0.0"
-    getenv "^1.0.0"
-    glob "7.1.6"
-    resolve-from "^5.0.0"
-    semver "^7.3.5"
-    slash "^3.0.0"
-    xcode "^3.0.1"
-    xml2js "0.4.23"
-
 "@expo/config-plugins@4.1.4", "@expo/config-plugins@^4.0.14", "@expo/config-plugins@~4.1.4":
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-4.1.4.tgz#08e1a6314dc0f96cd165a748b5997b5ec75a84d0"
@@ -1348,11 +1326,6 @@
     xcode "^3.0.1"
     xml2js "0.4.23"
 
-"@expo/config-types@^44.0.0":
-  version "44.0.0"
-  resolved "https://registry.yarnpkg.com/@expo/config-types/-/config-types-44.0.0.tgz#d3480fe2c99f9e895dae4ebba58b74ed72d03e26"
-  integrity sha512-d+gpdKOAhqaD5RmcMzGgKzNtvE1w+GCqpFQNSXLliYlXjj+Tv0eL8EPeAdPtvke0vowpPFwd5McXLA90dgY6Jg==
-
 "@expo/config-types@^45.0.0":
   version "45.0.0"
   resolved "https://registry.yarnpkg.com/@expo/config-types/-/config-types-45.0.0.tgz#963c2fdce8fbcbd003758b92ed8a25375f437ef6"
@@ -1367,23 +1340,6 @@
     "@expo/config-plugins" "4.1.4"
     "@expo/config-types" "^45.0.0"
     "@expo/json-file" "8.2.36"
-    getenv "^1.0.0"
-    glob "7.1.6"
-    require-from-string "^2.0.2"
-    resolve-from "^5.0.0"
-    semver "7.3.2"
-    slugify "^1.3.4"
-    sucrase "^3.20.0"
-
-"@expo/config@^6.0.6":
-  version "6.0.18"
-  resolved "https://registry.yarnpkg.com/@expo/config/-/config-6.0.18.tgz#fb3dd2dcf319a7ced77765c43e6825de4e14dff8"
-  integrity sha512-60z0YICI9eJWlvajl/Wgq8+lKm0jfkZOMdATDQtWz6GvWshUxd+A8EYhtgjJ9eWMGqOYkwrCpRNLHz5TZtCKWA==
-  dependencies:
-    "@babel/code-frame" "~7.10.4"
-    "@expo/config-plugins" "4.0.18"
-    "@expo/config-types" "^44.0.0"
-    "@expo/json-file" "8.2.34"
     getenv "^1.0.0"
     glob "7.1.6"
     require-from-string "^2.0.2"
@@ -1447,15 +1403,6 @@
     semver "7.3.2"
     tempy "0.3.0"
 
-"@expo/json-file@8.2.34":
-  version "8.2.34"
-  resolved "https://registry.yarnpkg.com/@expo/json-file/-/json-file-8.2.34.tgz#2f24e90a677195f7a81e167115460eb2902c3130"
-  integrity sha512-ZxtBodAZGxdLtgKzmsC+8ViUxt1mhFW642Clu2OuG3f6PAyAFsU/SqEGag9wKFaD3x3Wt8VhL+3y5fMJmUFgPw==
-  dependencies:
-    "@babel/code-frame" "~7.10.4"
-    json5 "^1.0.1"
-    write-file-atomic "^2.3.0"
-
 "@expo/json-file@8.2.36", "@expo/json-file@^8.2.35":
   version "8.2.36"
   resolved "https://registry.yarnpkg.com/@expo/json-file/-/json-file-8.2.36.tgz#62a505cb7f30a34d097386476794680a3f7385ff"
@@ -1502,15 +1449,6 @@
     rimraf "^3.0.2"
     split "^1.0.1"
     sudo-prompt "9.1.1"
-
-"@expo/plist@0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@expo/plist/-/plist-0.0.17.tgz#0f6c594e116f45a28f5ed20998dadb5f3429f88b"
-  integrity sha512-5Ul3d/YOYE6mfum0jCE25XUnkKHZ5vGlU/X2275ZmCtGrpRn1Fl8Nq+jQKSaks3NqTfxdyXROi/TgH8Zxeg2wg==
-  dependencies:
-    "@xmldom/xmldom" "~0.7.0"
-    base64-js "^1.2.3"
-    xmlbuilder "^14.0.0"
 
 "@expo/plist@0.0.18", "@expo/plist@^0.0.18":
   version "0.0.18"
@@ -3741,14 +3679,6 @@ expo-asset@~8.5.0:
     md5-file "^3.2.3"
     path-browserify "^1.0.0"
     url-parse "^1.5.9"
-
-expo-constants@~13.0.2:
-  version "13.0.2"
-  resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-13.0.2.tgz#b489ecd575cc82a9a0b3dfbf2385d45a44300eb1"
-  integrity sha512-vGs/kI65vplPFvG8z4W1ariGEtVHHp9Avl28G0zJprt2v/q1E/BnXjwvFSBPc1GB+Zb/7crWSHWRwjaFULBjsg==
-  dependencies:
-    "@expo/config" "^6.0.6"
-    uuid "^3.3.2"
 
 expo-constants@~13.1.1:
   version "13.1.1"
