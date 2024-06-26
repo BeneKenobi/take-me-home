@@ -1,0 +1,22 @@
+{
+  "files": {
+    "app.js": "/take-me-home/static/js/app.81da643a.chunk.js",
+    "app.js.map": "/take-me-home/static/js/app.81da643a.chunk.js.map",
+    "runtime~app.js": "/take-me-home/static/js/runtime~app.90c2370f.js",
+    "runtime~app.js.map": "/take-me-home/static/js/runtime~app.90c2370f.js.map",
+    "static/js/2.1d0161d7.chunk.js": "/take-me-home/static/js/2.1d0161d7.chunk.js",
+    "static/js/2.1d0161d7.chunk.js.map": "/take-me-home/static/js/2.1d0161d7.chunk.js.map",
+    "favicon-16.png": "/take-me-home/favicon-16.png",
+    "favicon-32.png": "/take-me-home/favicon-32.png",
+    "favicon.ico": "/take-me-home/favicon.ico",
+    "index.html": "/take-me-home/index.html",
+    "manifest.json": "/take-me-home/manifest.json",
+    "serve.json": "/take-me-home/serve.json",
+    "static/js/2.1d0161d7.chunk.js.LICENSE.txt": "/take-me-home/static/js/2.1d0161d7.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.90c2370f.js",
+    "static/js/2.1d0161d7.chunk.js",
+    "static/js/app.81da643a.chunk.js"
+  ]
+}
